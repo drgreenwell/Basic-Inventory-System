@@ -10,7 +10,7 @@ Key features of the software include:
 
 Here is the walkthrough for the software:
 
-["Basic Inventory System" Demo Video]()
+["Basic Inventory System" Demo Video](https://youtu.be/shcS-JgrZbY)
 
 # Development Environment
 
