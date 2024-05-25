@@ -1,8 +1,10 @@
 #include <iostream>
 #include <string>
+#include <sstream> // Include stringstream for string to number conversion
 #include <unordered_map>
+#include <limits> // Include limits header for stream clearing
 
-// Item class to store details of each item
+// Define the Item class outside the main function
 class Item {
 public:
     std::string name;
@@ -55,6 +57,14 @@ public:
     }
 };
 
+// Function to validate if a string is a valid number
+bool isNumber(const std::string& str) {
+    std::istringstream iss(str);
+    double temp;
+    iss >> temp;
+    return iss.eof() && !iss.fail();
+}
+
 int main() {
     Inventory inventory;
     int choice;
@@ -70,30 +80,72 @@ int main() {
         std::cout << "4. Display Inventory\n";
         std::cout << "5. Exit\n";
         std::cout << "Enter your choice: ";
+
+        // Read the choice
         std::cin >> choice;
+
+        // Clear the input buffer
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
         switch (choice) {
             case 1:
                 std::cout << "Enter item name: ";
-                std::cin >> name;
-                std::cout << "Enter quantity: ";
-                std::cin >> quantity;
-                std::cout << "Enter price: ";
-                std::cin >> price;
+                std::getline(std::cin, name);
+                do {
+                    std::cout << "Enter quantity: ";
+                    std::string quantityStr;
+                    std::getline(std::cin, quantityStr);
+                    if (isNumber(quantityStr)) {
+                        std::stringstream(quantityStr) >> quantity;
+                        break;
+                    } else {
+                        std::cout << "Invalid quantity. Please enter a valid number.\n";
+                    }
+                } while (true);
+                do {
+                    std::cout << "Enter price: ";
+                    std::string priceStr;
+                    std::getline(std::cin, priceStr);
+                    if (isNumber(priceStr)) {
+                        std::stringstream(priceStr) >> price;
+                        break;
+                    } else {
+                        std::cout << "Invalid price. Please enter a valid number.\n";
+                    }
+                } while (true);
                 inventory.addItem(name, quantity, price);
                 break;
             case 2:
                 std::cout << "Enter item name to remove: ";
-                std::cin >> name;
+                std::getline(std::cin, name);
                 inventory.removeItem(name);
                 break;
             case 3:
                 std::cout << "Enter item name to update: ";
-                std::cin >> name;
-                std::cout << "Enter new quantity: ";
-                std::cin >> quantity;
-                std::cout << "Enter new price: ";
-                std::cin >> price;
+                std::getline(std::cin, name);
+                do {
+                    std::cout << "Enter new quantity: ";
+                    std::string quantityStr;
+                    std::getline(std::cin, quantityStr);
+                    if (isNumber(quantityStr)) {
+                        std::stringstream(quantityStr) >> quantity;
+                        break;
+                    } else {
+                        std::cout << "Invalid quantity. Please enter a valid number.\n";
+                    }
+                } while (true);
+                do {
+                    std::cout << "Enter new price: ";
+                    std::string priceStr;
+                    std::getline(std::cin, priceStr);
+                    if (isNumber(priceStr)) {
+                        std::stringstream(priceStr) >> price;
+                        break;
+                    } else {
+                        std::cout << "Invalid price. Please enter a valid number.\n";
+                    }
+                } while (true);
                 inventory.updateItem(name, quantity, price);
                 break;
             case 4:
